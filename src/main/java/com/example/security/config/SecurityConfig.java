@@ -1,5 +1,6 @@
 package com.example.security.config;
 
+import com.example.security.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.security.security.jwt.JwtTokenAuthenticationFilter;
 import com.example.security.security.jwt.JwtTokenProvider;
 import javax.annotation.Resource;
@@ -33,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .antMatchers("/auth/login").permitAll()
           .anyRequest().authenticated()
         .and()
-        .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+          .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+        .and()
+          .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean
