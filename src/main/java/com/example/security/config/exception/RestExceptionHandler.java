@@ -14,7 +14,8 @@ import org.springframework.web.context.request.WebRequest;
 public class RestExceptionHandler {
 
   @ExceptionHandler(value = {InvalidJwtAuthenticationException.class})
-  public ResponseEntity<Throwable> invalidJwtAuthenticationException(InvalidJwtAuthenticationException e, WebRequest request) {
+  public ResponseEntity<Throwable> invalidJwtAuthenticationException(InvalidJwtAuthenticationException e,
+      WebRequest request) {
     return status(UNAUTHORIZED).build();
   }
 

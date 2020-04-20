@@ -1,7 +1,6 @@
 package com.example.security.config;
 
-import com.example.security.security.jwt.JwtAuthenticationEntryPoint;
-import com.example.security.security.jwt.JwtTokenAuthenticationFilter;
+import com.example.security.security.jwt.JwtSecurityConfig;
 import com.example.security.security.jwt.JwtTokenProvider;
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,13 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-          .authorizeRequests()
-          .antMatchers("/auth/login").permitAll()
-          .anyRequest().authenticated()
+        .authorizeRequests()
+        .antMatchers("/auth/login").permitAll()
+        .anyRequest().authenticated()
         .and()
-          .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-        .and()
-          .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+        .apply(new JwtSecurityConfig(tokenProvider));
   }
 
   @Bean

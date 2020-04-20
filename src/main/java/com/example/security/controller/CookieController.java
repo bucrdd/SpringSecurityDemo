@@ -4,15 +4,16 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class CookieController {
 
   @GetMapping("/test/cookie")
-  public String testCookie(@RequestParam("browser")String browser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+  public String testCookie(@RequestParam("browser") String browser, HttpServletRequest request,
+      HttpServletResponse response, HttpSession session) {
 
     Object sessionBrowser = session.getAttribute("browser");
     if (sessionBrowser != null) {
