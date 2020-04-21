@@ -9,7 +9,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/security_demo?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
     username: root
-    password: joe_jok5231
+    password: root
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       filters: stat, wall, slf4j, config
