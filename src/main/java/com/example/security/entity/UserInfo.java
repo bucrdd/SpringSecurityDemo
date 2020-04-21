@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,12 +47,14 @@ public class UserInfo implements UserDetails {
   @NotEmpty
   private String password;
 
-  @ManyToMany
+
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_info_role",
       joinColumns = {@JoinColumn(name = "user_info_id")},
       inverseJoinColumns = {@JoinColumn(name = "role_id")}
   )
   private List<Role> roles;
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -3,6 +3,7 @@ package com.example.security.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class Role implements Serializable {
 
   private String description;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "role_permission",
       joinColumns = {@JoinColumn(name = "role_id")},
       inverseJoinColumns = {@JoinColumn(name = "permission_id")}
