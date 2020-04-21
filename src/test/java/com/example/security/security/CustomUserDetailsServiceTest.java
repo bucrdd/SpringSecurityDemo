@@ -1,8 +1,5 @@
 package com.example.security.security;
 
-import com.example.security.entity.Role;
-import com.example.security.entity.UserInfo;
-import java.util.List;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
