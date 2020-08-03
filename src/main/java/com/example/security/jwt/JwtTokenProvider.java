@@ -1,6 +1,6 @@
-package com.example.security.security.jwt;
+package com.example.security.jwt;
 
-import com.example.security.entity.Role;
+import com.example.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;

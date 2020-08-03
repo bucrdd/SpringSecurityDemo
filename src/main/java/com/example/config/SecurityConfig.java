@@ -1,7 +1,7 @@
-package com.example.security.config;
+package com.example.config;
 
-import com.example.security.security.jwt.JwtSecurityConfig;
-import com.example.security.security.jwt.JwtTokenProvider;
+import com.example.security.jwt.JwtSecurityConfig;
+import com.example.security.jwt.JwtTokenProvider;
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

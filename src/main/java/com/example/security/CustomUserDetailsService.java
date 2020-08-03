@@ -1,7 +1,7 @@
-package com.example.security.security;
+package com.example.security;
 
-import com.example.security.entity.UserInfo;
-import com.example.security.repository.UserRepository;
+import com.example.entity.UserInfo;
+import com.example.repository.UserRepository;
 import javax.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,11 +1,15 @@
-package com.example.security.entity;
+package com.example.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -16,12 +20,12 @@ import lombok.ToString;
 
 @Data
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "permission")
-public class Permission implements Serializable {
+@Table(name = "role")
+public class Role implements Serializable {
 
   private static final long serialVersionId = 1L;
 
@@ -30,9 +34,15 @@ public class Permission implements Serializable {
   private long id;
 
   @NotEmpty
-  @Column(length = 50)
-  private String permission;
+  private String role;
 
-  @Column(length = 500)
   private String description;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "role_permission",
+      joinColumns = {@JoinColumn(name = "role_id")},
+      inverseJoinColumns = {@JoinColumn(name = "permission_id")}
+  )
+  private List<Permission> permissions;
+
 }

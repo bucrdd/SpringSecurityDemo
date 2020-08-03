@@ -1,4 +1,4 @@
-package com.example.security.controller;
+package com.example.controller;
 
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;

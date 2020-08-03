@@ -1,4 +1,4 @@
-package com.example.security.controller;
+package com.example.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 

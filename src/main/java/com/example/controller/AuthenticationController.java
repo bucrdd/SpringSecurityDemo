@@ -1,10 +1,10 @@
-package com.example.security.controller;
+package com.example.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.example.security.entity.UserInfo;
-import com.example.security.security.CustomUserDetailsService;
-import com.example.security.security.jwt.JwtTokenProvider;
+import com.example.entity.UserInfo;
+import com.example.security.jwt.JwtTokenProvider;
+import com.example.security.CustomUserDetailsService;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
