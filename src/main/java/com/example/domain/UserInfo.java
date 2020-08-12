@@ -1,67 +1,45 @@
-package com.example.entity;
+package com.example.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Entity
+@Table(name = "user_info")
 @Data
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "user_info")
+@ApiModel("系统用户")
 public class UserInfo implements UserDetails {
-
-  public static final long serialVersionId = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty("用户Id")
   private long id;
 
-  @NotEmpty
-  @Column(length = 50)
+  @ApiModelProperty("用户名")
+  @NotBlank(message = "用户名不能为空")
   private String username;
 
-  @NotEmpty
-  private String password;
-
-
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "user_info_role",
-      joinColumns = {@JoinColumn(name = "user_info_id")},
-      inverseJoinColumns = {@JoinColumn(name = "role_id")}
-  )
-  private List<Role> roles;
-
+  @ApiModelProperty("密码")
+  private String password;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
-  }
-
-  @Override
-  public String getPassword() {
-    return password;
+    return null;
   }
 
   @Override
@@ -83,5 +61,4 @@ public class UserInfo implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }

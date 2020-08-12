@@ -1,10 +1,15 @@
 package com.example.repository;
 
-import com.example.entity.UserInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.domain.UserInfo;
+import java.util.Optional;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
+public interface UserRepository extends CrudRepository<UserInfo, Long> {
 
-public interface UserRepository extends JpaRepository<UserInfo, Long> {
+  Optional<UserInfo> findByUsername(String username);
 
-  UserInfo findByUsername(String username);
+  boolean existsByUsername(String username);
+
 }
