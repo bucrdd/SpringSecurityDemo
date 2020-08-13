@@ -4,9 +4,12 @@ import com.example.common.BaseException;
 import com.example.common.Result;
 import com.example.domain.UserInfo;
 import com.example.dto.UserUpdateDto;
+import com.example.repository.UserRepository;
 import com.example.sevice.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -25,6 +28,9 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private UserRepository users;
+
   @GetMapping("/virtual")
   @ApiOperation(value = "获得一个虚拟用户", notes = "获得一个虚拟用户 notes")
   public UserInfo virtualUser() {
@@ -32,6 +38,11 @@ public class UserController {
     userInfo.setUsername("virtual User");
     userInfo.setPassword("123456");
     return userInfo;
+  }
+
+  @GetMapping("/list")
+  public List<UserInfo> findAllUsers() {
+    return new ArrayList<UserInfo>(users.findAll());
   }
 
   @PostMapping("/sign_on")

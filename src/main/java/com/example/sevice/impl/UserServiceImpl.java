@@ -5,8 +5,10 @@ import com.example.domain.UserInfo;
 import com.example.dto.UserUpdateDto;
 import com.example.repository.UserRepository;
 import com.example.sevice.UserService;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
         .password(encoder.encode(param.getPassword()))
         .build();
     return users.save(user);
+  }
+
+  public List<UserInfo> findAll() {
 
   }
 
