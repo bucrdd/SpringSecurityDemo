@@ -6,19 +6,25 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/security_demo?serverTimezone=UTC
     username: root
-    password: 123456
+    password: joe_jok5231
   jpa:
-    show-sql: true
-    generate-ddl: true
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 logging:
   level:
-    org.springframework.web: INFO
+    org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     com.example.security: DEBUG
-  file:
-    name: log/app.log
-  pattern:
-    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%15thread] %logger{50} : %msg%n'
+    com.example: DEBUG
+  config: classpath:logback_config.xml
+
+selfDefine:
+  logfile:
+    rootPath: ./logs
+    maxSize: 100MB

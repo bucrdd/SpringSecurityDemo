@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration scan="true" scanPeriod="10 seconds">
+
+  <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+  <!-- 彩色日志 -->
+  <!-- 彩色日志依赖的渲染类 <code>include in org/springframework/boot/logging/logback/defaults.xml</code> -->
+<!--  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />-->
+<!--  <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />-->
+<!--  <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />-->
+
+  <property name="FILE_ERROR_PATTERN"
+    value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTER:-yyyy-MM-dd HH:mm:ss,SSS}} ${LOG_LEVEL_PATTERN:-%5p}
+    ${PID:- } --- [%t] %-40.40logger{39} %file:%line: %m%n${LOG_EXCEPTION_CONVERSION_WORD: -%wEx}}"/>
+
+<!--  <property name="MY_FILE_LOG_PATTERN"-->
+<!--    value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss,SSS}} ${LOG_LEVEL_PATTERN:-%5p}-->
+<!--    ${PID:- } -&#45;&#45; [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
+
+<!--  <property name="CONSOLE_LOG_PATTERN_COLOR"-->
+<!--    value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss,SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p})-->
+<!--    %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{0}){cyan}-->
+<!--    %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
+
+  <property resource="application.yml" />
+  <springProperty scope="context" name="LOG_HOME" source="selfDefine.logfile.rootPath" value="./log"/>
+  <springProperty scope="context" name="LOG_FILE_SIZE" source="selfDefine.logfile.maxSize" value="20MB"/>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <encoder>
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <!--日志名称，如果没有 File 属性，那么只会使用FileNamePattern的文件路径规则如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天的日志改名为今天的日期。即，<File> 的日志都是当天的。-->
+    <!--<File>logs/info.spring-boot-demo-logback.log</File>-->
+    <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!--文件路径，支持相对路径或者绝对路径（尽量避免相对路径，通过绝对路径保证存储位置的固定）,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+      <!-- 指定文件的路径以及对应的文件命名格式，其中%i表示递增标识ID序号，日志切换绕接的时候递增-->
+      <FileNamePattern>${LOG_HOME}/logging/info_%d{yyyy-MM-dd}.part_%i.log</FileNamePattern>
+      <!--只保留最近90天的日志-->
+      <maxHistory>90</maxHistory>
+      <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
+      <!--<totalSizeCap>1GB</totalSizeCap>-->
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <!-- maxFileSize:这是活动文件的大小，默认值是10MB,本篇设置为1KB，只是为了演示 -->
+        <!--此处演示从application.yml中读取配置的属性值，通过${}的方式引用-->
+        <maxFileSize>${LOG_FILE_SIZE}</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+
+    <!-- 指定此append对应的日志内容的格式-->
+    <encoder>
+      <pattern>${FILE_LOG_PATTERN}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+
+  <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>${LOG_HOME}/error/error_%d{yyyy-MM-dd}.part_%i.log</FileNamePattern>
+      <maxHistory>90</maxHistory>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>${LOG_FILE_SIZE}</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder>
+      <pattern>${FILE_ERROR_PATTERN}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <root>
+    <appender-ref ref="console" />
+    <appender-ref ref="file_info" />
+  </root>
+
+  <springProfile name="dev">
+    <root level="debug">
+      <appender-ref ref="file_error"/>
+    </root>
+  </springProfile>
+
+</configuration>

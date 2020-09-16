@@ -2,13 +2,10 @@ package com.example.sevice.impl;
 
 import com.example.common.BaseException;
 import com.example.domain.UserInfo;
-import com.example.dto.UserUpdateDto;
 import com.example.repository.UserRepository;
 import com.example.sevice.UserService;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +20,15 @@ public class UserServiceImpl implements UserService {
   private PasswordEncoder encoder;
 
   @Override
-  public UserInfo signOn(UserUpdateDto param) {
-    if (users.existsByUsername(param.getUsername())) {
-      throw new BaseException(param.getUsername() + " is already exists!");
+  public UserInfo signOn(UserInfo user) {
+    if (users.existsByUsername(user.getUsername())) {
+      String message = "Username [" + user.getUsername() + "] is already exist!";
+      log.error(message);
+      throw new BaseException(message);
     }
-    UserInfo user = UserInfo.builder()
-        .username(param.getUsername())
-        .password(encoder.encode(param.getPassword()))
-        .build();
+    user.setPassword(encoder.encode(user.getPassword()));
     return users.save(user);
   }
 
-  public List<UserInfo> findAll() {
-
-  }
 
 }
