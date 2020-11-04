@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
           .antMatchers(AUTH_LIST).permitAll()
           .antMatchers("/auth/login").permitAll()
+          .antMatchers(HttpMethod.POST, "/user/sign_on").permitAll()
           .anyRequest().authenticated()
         .and()
         .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())

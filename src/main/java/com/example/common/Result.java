@@ -1,31 +1,44 @@
 package com.example.common;
 
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
+  public static final int NO_LOGIN = -1;
+
+  public static final int SUCCESS = 0;
+
+  public static final int FAIL = 1;
+
+  public static final int NO_PERMISSION = 2;
+
 
   private int code;
 
-  private String message;
+  private String message = "success";
+
+  private LocalDateTime timestamp = LocalDateTime.now();
 
   private T data;
 
-  public Result(T data) {
-    this.code = 200;
-    this.message = "success";
-    this.data = data;
+  public Result() {
+    super();
   }
 
-  public Result(int code, String message, T data) {
-    this.code = code;
-    this.message = message;
+  public Result(T data) {
+    super();
     this.data = data;
   }
 
   public Result(Throwable e) {
-    this.code = 500;
-    this.message = e.getMessage();
+    super();
+    this.code = FAIL;
+    this.message = e.toString();
   }
 }

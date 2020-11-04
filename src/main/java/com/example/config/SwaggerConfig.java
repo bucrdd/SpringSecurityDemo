@@ -42,7 +42,7 @@ public class SwaggerConfig {
     parameters.add(parameterBuilder.build());
     */
 
-    Docket docket = new Docket(DocumentationType.SWAGGER_2)
+    return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(apiInfo())
         .select()
         //.apis(RequestHandlerSelectors.any())
@@ -51,7 +51,6 @@ public class SwaggerConfig {
         .build()//.extensions(Lists.newArrayList(new ApiOrderExtension(1))).globalOperationParameters(parameters)
         .securityContexts(Lists.newArrayList(securityContext()))
         .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()));
-    return docket;
 
   }
 

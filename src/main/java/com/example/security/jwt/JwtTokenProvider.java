@@ -8,8 +8,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-  @Autowired
+  @Resource
   private JwtProperties jwtProperties;
 
-  @Autowired
+  @Resource
   private UserDetailsService userDetailsService;
 
   private String secretKey;
@@ -48,7 +48,7 @@ public class JwtTokenProvider {
 
   public String resolveToken(HttpServletRequest req) {
     String bearerToken = req.getHeader("Authorization");
-    if (bearerToken != null && bearerToken.startsWith("Bearer")) {
+    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
       return bearerToken.substring(7);
     }
     return null;
