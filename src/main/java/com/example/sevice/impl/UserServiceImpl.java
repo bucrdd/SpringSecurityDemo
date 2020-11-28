@@ -13,22 +13,22 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-  @Autowired
-  private UserRepository users;
+    @Autowired
+    private UserRepository users;
 
-  @Autowired
-  private PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
-  @Override
-  public UserInfo signOn(UserInfo user) {
-    if (users.existsByUsername(user.getUsername())) {
-      String message = "Username [" + user.getUsername() + "] is already exist!";
-      log.error(message);
-      throw new BaseException(message);
+    @Override
+    public UserInfo signOn(UserInfo user) {
+        if (users.existsByUsername(user.getUsername())) {
+            String message = "Username [" + user.getUsername() + "] is already exist!";
+            log.error(message);
+            throw new BaseException(message);
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        return users.save(user);
     }
-    user.setPassword(encoder.encode(user.getPassword()));
-    return users.save(user);
-  }
 
 
 }

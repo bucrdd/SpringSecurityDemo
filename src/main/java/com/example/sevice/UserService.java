@@ -4,6 +4,6 @@ import com.example.domain.UserInfo;
 
 public interface UserService {
 
-  UserInfo signOn(UserInfo user);
+    UserInfo signOn(UserInfo user);
 
 }
